@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.JixitruckOrderMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.JixitruckOrder">
+    <id column="sellordercode" jdbcType="VARCHAR" property="sellordercode" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="freight" jdbcType="DOUBLE" property="freight" />
+    <result column="sendDate" jdbcType="TIMESTAMP" property="senddate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sellordercode, supplier, address, freight, sendDate
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.JixitruckOrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jixitruck_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from jixitruck_order
+    where sellordercode = #{sellordercode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getFreightsByDate" parameterType="map" resultType="java.lang.Double">
+    select sum(freight) from jixitruck_order
+    <where>
+      <if test="pickdateMin!=null ||pickdateMax!=null">
+        and sendDate between #{pickdateMin,jdbcType=TIMESTAMP} and #{pickdateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="like" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from jixitruck_order
+    <where>
+      <if test="pickdateMin!=null ||pickdateMax!=null">
+        and sendDate between #{pickdateMin,jdbcType=TIMESTAMP} and #{pickdateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from jixitruck_order
+    where sellordercode = #{sellordercode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.JixitruckOrderExample">
+    delete from jixitruck_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.JixitruckOrder">
+    insert into jixitruck_order (sellordercode, supplier, address, 
+      freight, sendDate)
+    values (#{sellordercode,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{freight,jdbcType=DOUBLE}, #{senddate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.JixitruckOrder">
+    insert into jixitruck_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sellordercode != null">
+        sellordercode,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="freight != null">
+        freight,
+      </if>
+      <if test="senddate != null">
+        sendDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sellordercode != null">
+        #{sellordercode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="freight != null">
+        #{freight,jdbcType=DOUBLE},
+      </if>
+      <if test="senddate != null">
+        #{senddate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.JixitruckOrderExample" resultType="java.lang.Long">
+    select count(*) from jixitruck_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update jixitruck_order
+    <set>
+      <if test="record.sellordercode != null">
+        sellordercode = #{record.sellordercode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freight != null">
+        freight = #{record.freight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.senddate != null">
+        sendDate = #{record.senddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update jixitruck_order
+    set sellordercode = #{record.sellordercode,jdbcType=VARCHAR},
+      supplier = #{record.supplier,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      freight = #{record.freight,jdbcType=DOUBLE},
+      sendDate = #{record.senddate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.JixitruckOrder">
+    update jixitruck_order
+    <set>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="freight != null">
+        freight = #{freight,jdbcType=DOUBLE},
+      </if>
+      <if test="senddate != null">
+        sendDate = #{senddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where sellordercode = #{sellordercode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.JixitruckOrder">
+    update jixitruck_order
+    set supplier = #{supplier,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      freight = #{freight,jdbcType=DOUBLE},
+      sendDate = #{senddate,jdbcType=TIMESTAMP}
+    where sellordercode = #{sellordercode,jdbcType=VARCHAR}
+  </update>
+</mapper>

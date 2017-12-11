@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.SellorderAllMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.SellorderAll">
+    <id column="time_month" jdbcType="VARCHAR" property="timeMonth" />
+    <result column="allsums" jdbcType="DOUBLE" property="allsums" />
+    <result column="allcounts" jdbcType="INTEGER" property="allcounts" />
+    <result column="d_count" jdbcType="INTEGER" property="dCount" />
+    <result column="c_count" jdbcType="INTEGER" property="cCount" />
+    <result column="b_count" jdbcType="INTEGER" property="bCount" />
+    <result column="a_count" jdbcType="INTEGER" property="aCount" />
+    <result column="d_count_rateGrowth" jdbcType="VARCHAR" property="dCountRategrowth" />
+    <result column="d_sum" jdbcType="DOUBLE" property="dSum" />
+    <result column="d_sum_rateGrowth" jdbcType="VARCHAR" property="dSumRategrowth" />
+    <result column="c_count_rateGrowth" jdbcType="VARCHAR" property="cCountRategrowth" />
+    <result column="c_sum" jdbcType="DOUBLE" property="cSum" />
+    <result column="c_sum_rateGrowth" jdbcType="VARCHAR" property="cSumRategrowth" />
+    <result column="b_sum" jdbcType="DOUBLE" property="bSum" />
+    <result column="a_sum" jdbcType="DOUBLE" property="aSum" />
+    <result column="d_sum_avg" jdbcType="DOUBLE" property="dSumAvg" />
+    <result column="c_sum_avg" jdbcType="DOUBLE" property="cSumAvg" />
+    <result column="d_sum_pro" jdbcType="VARCHAR" property="dSumPro" />
+    <result column="c_sum_pro" jdbcType="VARCHAR" property="cSumPro" />
+    <result column="d_customer_count" jdbcType="INTEGER" property="dCustomerCount" />
+    <result column="c_customer_count" jdbcType="INTEGER" property="cCustomerCount" />
+    <result column="all_customer_count" jdbcType="INTEGER" property="allCustomerCount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    time_month, allsums, allcounts, d_count, c_count, b_count, a_count, d_count_rateGrowth, 
+    d_sum, d_sum_rateGrowth, c_count_rateGrowth, c_sum, c_sum_rateGrowth, b_sum, a_sum, 
+    d_sum_avg, c_sum_avg, d_sum_pro, c_sum_pro, d_customer_count, c_customer_count, all_customer_count
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.SellorderAllExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sellorder_all
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sellorder_all
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sellorder_all
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.SellorderAllExample">
+    delete from sellorder_all
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.SellorderAll">
+    insert into sellorder_all (time_month, allsums, allcounts, 
+      d_count, c_count, b_count, 
+      a_count, d_count_rateGrowth, d_sum, 
+      d_sum_rateGrowth, c_count_rateGrowth, c_sum, 
+      c_sum_rateGrowth, b_sum, a_sum, 
+      d_sum_avg, c_sum_avg, d_sum_pro, 
+      c_sum_pro, d_customer_count, c_customer_count, 
+      all_customer_count)
+    values (#{timeMonth,jdbcType=VARCHAR}, #{allsums,jdbcType=DOUBLE}, #{allcounts,jdbcType=INTEGER}, 
+      #{dCount,jdbcType=INTEGER}, #{cCount,jdbcType=INTEGER}, #{bCount,jdbcType=INTEGER}, 
+      #{aCount,jdbcType=INTEGER}, #{dCountRategrowth,jdbcType=VARCHAR}, #{dSum,jdbcType=DOUBLE}, 
+      #{dSumRategrowth,jdbcType=VARCHAR}, #{cCountRategrowth,jdbcType=VARCHAR}, #{cSum,jdbcType=DOUBLE}, 
+      #{cSumRategrowth,jdbcType=VARCHAR}, #{bSum,jdbcType=DOUBLE}, #{aSum,jdbcType=DOUBLE}, 
+      #{dSumAvg,jdbcType=DOUBLE}, #{cSumAvg,jdbcType=DOUBLE}, #{dSumPro,jdbcType=VARCHAR}, 
+      #{cSumPro,jdbcType=VARCHAR}, #{dCustomerCount,jdbcType=INTEGER}, #{cCustomerCount,jdbcType=INTEGER}, 
+      #{allCustomerCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.SellorderAll">
+    insert into sellorder_all
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="timeMonth != null">
+        time_month,
+      </if>
+      <if test="allsums != null">
+        allsums,
+      </if>
+      <if test="allcounts != null">
+        allcounts,
+      </if>
+      <if test="dCount != null">
+        d_count,
+      </if>
+      <if test="cCount != null">
+        c_count,
+      </if>
+      <if test="bCount != null">
+        b_count,
+      </if>
+      <if test="aCount != null">
+        a_count,
+      </if>
+      <if test="dCountRategrowth != null">
+        d_count_rateGrowth,
+      </if>
+      <if test="dSum != null">
+        d_sum,
+      </if>
+      <if test="dSumRategrowth != null">
+        d_sum_rateGrowth,
+      </if>
+      <if test="cCountRategrowth != null">
+        c_count_rateGrowth,
+      </if>
+      <if test="cSum != null">
+        c_sum,
+      </if>
+      <if test="cSumRategrowth != null">
+        c_sum_rateGrowth,
+      </if>
+      <if test="bSum != null">
+        b_sum,
+      </if>
+      <if test="aSum != null">
+        a_sum,
+      </if>
+      <if test="dSumAvg != null">
+        d_sum_avg,
+      </if>
+      <if test="cSumAvg != null">
+        c_sum_avg,
+      </if>
+      <if test="dSumPro != null">
+        d_sum_pro,
+      </if>
+      <if test="cSumPro != null">
+        c_sum_pro,
+      </if>
+      <if test="dCustomerCount != null">
+        d_customer_count,
+      </if>
+      <if test="cCustomerCount != null">
+        c_customer_count,
+      </if>
+      <if test="allCustomerCount != null">
+        all_customer_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="timeMonth != null">
+        #{timeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="allsums != null">
+        #{allsums,jdbcType=DOUBLE},
+      </if>
+      <if test="allcounts != null">
+        #{allcounts,jdbcType=INTEGER},
+      </if>
+      <if test="dCount != null">
+        #{dCount,jdbcType=INTEGER},
+      </if>
+      <if test="cCount != null">
+        #{cCount,jdbcType=INTEGER},
+      </if>
+      <if test="bCount != null">
+        #{bCount,jdbcType=INTEGER},
+      </if>
+      <if test="aCount != null">
+        #{aCount,jdbcType=INTEGER},
+      </if>
+      <if test="dCountRategrowth != null">
+        #{dCountRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="dSum != null">
+        #{dSum,jdbcType=DOUBLE},
+      </if>
+      <if test="dSumRategrowth != null">
+        #{dSumRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountRategrowth != null">
+        #{cCountRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="cSum != null">
+        #{cSum,jdbcType=DOUBLE},
+      </if>
+      <if test="cSumRategrowth != null">
+        #{cSumRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="bSum != null">
+        #{bSum,jdbcType=DOUBLE},
+      </if>
+      <if test="aSum != null">
+        #{aSum,jdbcType=DOUBLE},
+      </if>
+      <if test="dSumAvg != null">
+        #{dSumAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="cSumAvg != null">
+        #{cSumAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="dSumPro != null">
+        #{dSumPro,jdbcType=VARCHAR},
+      </if>
+      <if test="cSumPro != null">
+        #{cSumPro,jdbcType=VARCHAR},
+      </if>
+      <if test="dCustomerCount != null">
+        #{dCustomerCount,jdbcType=INTEGER},
+      </if>
+      <if test="cCustomerCount != null">
+        #{cCustomerCount,jdbcType=INTEGER},
+      </if>
+      <if test="allCustomerCount != null">
+        #{allCustomerCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.SellorderAllExample" resultType="java.lang.Long">
+    select count(*) from sellorder_all
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sellorder_all
+    <set>
+      <if test="record.timeMonth != null">
+        time_month = #{record.timeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allsums != null">
+        allsums = #{record.allsums,jdbcType=DOUBLE},
+      </if>
+      <if test="record.allcounts != null">
+        allcounts = #{record.allcounts,jdbcType=INTEGER},
+      </if>
+      <if test="record.dCount != null">
+        d_count = #{record.dCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.cCount != null">
+        c_count = #{record.cCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bCount != null">
+        b_count = #{record.bCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.aCount != null">
+        a_count = #{record.aCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.dCountRategrowth != null">
+        d_count_rateGrowth = #{record.dCountRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dSum != null">
+        d_sum = #{record.dSum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dSumRategrowth != null">
+        d_sum_rateGrowth = #{record.dSumRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCountRategrowth != null">
+        c_count_rateGrowth = #{record.cCountRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSum != null">
+        c_sum = #{record.cSum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cSumRategrowth != null">
+        c_sum_rateGrowth = #{record.cSumRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bSum != null">
+        b_sum = #{record.bSum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.aSum != null">
+        a_sum = #{record.aSum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dSumAvg != null">
+        d_sum_avg = #{record.dSumAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cSumAvg != null">
+        c_sum_avg = #{record.cSumAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dSumPro != null">
+        d_sum_pro = #{record.dSumPro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSumPro != null">
+        c_sum_pro = #{record.cSumPro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dCustomerCount != null">
+        d_customer_count = #{record.dCustomerCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.cCustomerCount != null">
+        c_customer_count = #{record.cCustomerCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.allCustomerCount != null">
+        all_customer_count = #{record.allCustomerCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sellorder_all
+    set time_month = #{record.timeMonth,jdbcType=VARCHAR},
+      allsums = #{record.allsums,jdbcType=DOUBLE},
+      allcounts = #{record.allcounts,jdbcType=INTEGER},
+      d_count = #{record.dCount,jdbcType=INTEGER},
+      c_count = #{record.cCount,jdbcType=INTEGER},
+      b_count = #{record.bCount,jdbcType=INTEGER},
+      a_count = #{record.aCount,jdbcType=INTEGER},
+      d_count_rateGrowth = #{record.dCountRategrowth,jdbcType=VARCHAR},
+      d_sum = #{record.dSum,jdbcType=DOUBLE},
+      d_sum_rateGrowth = #{record.dSumRategrowth,jdbcType=VARCHAR},
+      c_count_rateGrowth = #{record.cCountRategrowth,jdbcType=VARCHAR},
+      c_sum = #{record.cSum,jdbcType=DOUBLE},
+      c_sum_rateGrowth = #{record.cSumRategrowth,jdbcType=VARCHAR},
+      b_sum = #{record.bSum,jdbcType=DOUBLE},
+      a_sum = #{record.aSum,jdbcType=DOUBLE},
+      d_sum_avg = #{record.dSumAvg,jdbcType=DOUBLE},
+      c_sum_avg = #{record.cSumAvg,jdbcType=DOUBLE},
+      d_sum_pro = #{record.dSumPro,jdbcType=VARCHAR},
+      c_sum_pro = #{record.cSumPro,jdbcType=VARCHAR},
+      d_customer_count = #{record.dCustomerCount,jdbcType=INTEGER},
+      c_customer_count = #{record.cCustomerCount,jdbcType=INTEGER},
+      all_customer_count = #{record.allCustomerCount,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.SellorderAll">
+    update sellorder_all
+    <set>
+      <if test="allsums != null">
+        allsums = #{allsums,jdbcType=DOUBLE},
+      </if>
+      <if test="allcounts != null">
+        allcounts = #{allcounts,jdbcType=INTEGER},
+      </if>
+      <if test="dCount != null">
+        d_count = #{dCount,jdbcType=INTEGER},
+      </if>
+      <if test="cCount != null">
+        c_count = #{cCount,jdbcType=INTEGER},
+      </if>
+      <if test="bCount != null">
+        b_count = #{bCount,jdbcType=INTEGER},
+      </if>
+      <if test="aCount != null">
+        a_count = #{aCount,jdbcType=INTEGER},
+      </if>
+      <if test="dCountRategrowth != null">
+        d_count_rateGrowth = #{dCountRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="dSum != null">
+        d_sum = #{dSum,jdbcType=DOUBLE},
+      </if>
+      <if test="dSumRategrowth != null">
+        d_sum_rateGrowth = #{dSumRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountRategrowth != null">
+        c_count_rateGrowth = #{cCountRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="cSum != null">
+        c_sum = #{cSum,jdbcType=DOUBLE},
+      </if>
+      <if test="cSumRategrowth != null">
+        c_sum_rateGrowth = #{cSumRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="bSum != null">
+        b_sum = #{bSum,jdbcType=DOUBLE},
+      </if>
+      <if test="aSum != null">
+        a_sum = #{aSum,jdbcType=DOUBLE},
+      </if>
+      <if test="dSumAvg != null">
+        d_sum_avg = #{dSumAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="cSumAvg != null">
+        c_sum_avg = #{cSumAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="dSumPro != null">
+        d_sum_pro = #{dSumPro,jdbcType=VARCHAR},
+      </if>
+      <if test="cSumPro != null">
+        c_sum_pro = #{cSumPro,jdbcType=VARCHAR},
+      </if>
+      <if test="dCustomerCount != null">
+        d_customer_count = #{dCustomerCount,jdbcType=INTEGER},
+      </if>
+      <if test="cCustomerCount != null">
+        c_customer_count = #{cCustomerCount,jdbcType=INTEGER},
+      </if>
+      <if test="allCustomerCount != null">
+        all_customer_count = #{allCustomerCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.SellorderAll">
+    update sellorder_all
+    set allsums = #{allsums,jdbcType=DOUBLE},
+      allcounts = #{allcounts,jdbcType=INTEGER},
+      d_count = #{dCount,jdbcType=INTEGER},
+      c_count = #{cCount,jdbcType=INTEGER},
+      b_count = #{bCount,jdbcType=INTEGER},
+      a_count = #{aCount,jdbcType=INTEGER},
+      d_count_rateGrowth = #{dCountRategrowth,jdbcType=VARCHAR},
+      d_sum = #{dSum,jdbcType=DOUBLE},
+      d_sum_rateGrowth = #{dSumRategrowth,jdbcType=VARCHAR},
+      c_count_rateGrowth = #{cCountRategrowth,jdbcType=VARCHAR},
+      c_sum = #{cSum,jdbcType=DOUBLE},
+      c_sum_rateGrowth = #{cSumRategrowth,jdbcType=VARCHAR},
+      b_sum = #{bSum,jdbcType=DOUBLE},
+      a_sum = #{aSum,jdbcType=DOUBLE},
+      d_sum_avg = #{dSumAvg,jdbcType=DOUBLE},
+      c_sum_avg = #{cSumAvg,jdbcType=DOUBLE},
+      d_sum_pro = #{dSumPro,jdbcType=VARCHAR},
+      c_sum_pro = #{cSumPro,jdbcType=VARCHAR},
+      d_customer_count = #{dCustomerCount,jdbcType=INTEGER},
+      c_customer_count = #{cCustomerCount,jdbcType=INTEGER},
+      all_customer_count = #{allCustomerCount,jdbcType=INTEGER}
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </update>
+</mapper>
