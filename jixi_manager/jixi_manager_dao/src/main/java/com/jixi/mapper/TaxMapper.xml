@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.TaxMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Tax">
+    <id column="time_month" jdbcType="VARCHAR" property="timeMonth" />
+    <result column="incom_tax" jdbcType="DOUBLE" property="incomTax" />
+    <result column="ticket_tax" jdbcType="DOUBLE" property="ticketTax" />
+    <result column="noTicket_tax" jdbcType="DOUBLE" property="noticketTax" />
+    <result column="sell_tax" jdbcType="DOUBLE" property="sellTax" />
+    <result column="in_sell_difference" jdbcType="DOUBLE" property="inSellDifference" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    time_month, incom_tax, ticket_tax, noTicket_tax, sell_tax, in_sell_difference, remark
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.TaxExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tax
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tax
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tax
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.TaxExample">
+    delete from tax
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Tax">
+    insert into tax (time_month, incom_tax, ticket_tax, 
+      noTicket_tax, sell_tax, in_sell_difference, 
+      remark)
+    values (#{timeMonth,jdbcType=VARCHAR}, #{incomTax,jdbcType=DOUBLE}, #{ticketTax,jdbcType=DOUBLE}, 
+      #{noticketTax,jdbcType=DOUBLE}, #{sellTax,jdbcType=DOUBLE}, #{inSellDifference,jdbcType=DOUBLE}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Tax">
+    insert into tax
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="timeMonth != null">
+        time_month,
+      </if>
+      <if test="incomTax != null">
+        incom_tax,
+      </if>
+      <if test="ticketTax != null">
+        ticket_tax,
+      </if>
+      <if test="noticketTax != null">
+        noTicket_tax,
+      </if>
+      <if test="sellTax != null">
+        sell_tax,
+      </if>
+      <if test="inSellDifference != null">
+        in_sell_difference,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="timeMonth != null">
+        #{timeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="incomTax != null">
+        #{incomTax,jdbcType=DOUBLE},
+      </if>
+      <if test="ticketTax != null">
+        #{ticketTax,jdbcType=DOUBLE},
+      </if>
+      <if test="noticketTax != null">
+        #{noticketTax,jdbcType=DOUBLE},
+      </if>
+      <if test="sellTax != null">
+        #{sellTax,jdbcType=DOUBLE},
+      </if>
+      <if test="inSellDifference != null">
+        #{inSellDifference,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.TaxExample" resultType="java.lang.Long">
+    select count(*) from tax
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tax
+    <set>
+      <if test="record.timeMonth != null">
+        time_month = #{record.timeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incomTax != null">
+        incom_tax = #{record.incomTax,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ticketTax != null">
+        ticket_tax = #{record.ticketTax,jdbcType=DOUBLE},
+      </if>
+      <if test="record.noticketTax != null">
+        noTicket_tax = #{record.noticketTax,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sellTax != null">
+        sell_tax = #{record.sellTax,jdbcType=DOUBLE},
+      </if>
+      <if test="record.inSellDifference != null">
+        in_sell_difference = #{record.inSellDifference,jdbcType=DOUBLE},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tax
+    set time_month = #{record.timeMonth,jdbcType=VARCHAR},
+      incom_tax = #{record.incomTax,jdbcType=DOUBLE},
+      ticket_tax = #{record.ticketTax,jdbcType=DOUBLE},
+      noTicket_tax = #{record.noticketTax,jdbcType=DOUBLE},
+      sell_tax = #{record.sellTax,jdbcType=DOUBLE},
+      in_sell_difference = #{record.inSellDifference,jdbcType=DOUBLE},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Tax">
+    update tax
+    <set>
+      <if test="incomTax != null">
+        incom_tax = #{incomTax,jdbcType=DOUBLE},
+      </if>
+      <if test="ticketTax != null">
+        ticket_tax = #{ticketTax,jdbcType=DOUBLE},
+      </if>
+      <if test="noticketTax != null">
+        noTicket_tax = #{noticketTax,jdbcType=DOUBLE},
+      </if>
+      <if test="sellTax != null">
+        sell_tax = #{sellTax,jdbcType=DOUBLE},
+      </if>
+      <if test="inSellDifference != null">
+        in_sell_difference = #{inSellDifference,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Tax">
+    update tax
+    set incom_tax = #{incomTax,jdbcType=DOUBLE},
+      ticket_tax = #{ticketTax,jdbcType=DOUBLE},
+      noTicket_tax = #{noticketTax,jdbcType=DOUBLE},
+      sell_tax = #{sellTax,jdbcType=DOUBLE},
+      in_sell_difference = #{inSellDifference,jdbcType=DOUBLE},
+      remark = #{remark,jdbcType=VARCHAR}
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </update>
+</mapper>

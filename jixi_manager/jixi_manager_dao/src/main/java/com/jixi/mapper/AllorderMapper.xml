@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.AllorderMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Allorder">
+    <id column="time_month" jdbcType="VARCHAR" property="timeMonth" />
+    <result column="sell_sums" jdbcType="DOUBLE" property="sellSums" />
+    <result column="sell_sums_rateGrowth" jdbcType="VARCHAR" property="sellSumsRategrowth" />
+    <result column="sell_counts" jdbcType="INTEGER" property="sellCounts" />
+    <result column="sell_counts_rateGrowth" jdbcType="VARCHAR" property="sellCountsRategrowth" />
+    <result column="sell_sums_avg" jdbcType="DOUBLE" property="sellSumsAvg" />
+    <result column="sell_sums_dayAvg" jdbcType="DOUBLE" property="sellSumsDayavg" />
+    <result column="sell_counts_dayAvg" jdbcType="DOUBLE" property="sellCountsDayavg" />
+    <result column="pick_sums" jdbcType="DOUBLE" property="pickSums" />
+    <result column="real_grossProfit" jdbcType="DOUBLE" property="realGrossprofit" />
+    <result column="pin_off_itemOffset" jdbcType="DOUBLE" property="pinOffItemoffset" />
+    <result column="grossMargin" jdbcType="VARCHAR" property="grossmargin" />
+    <result column="freightPro" jdbcType="VARCHAR" property="freightpro" />
+    <result column="freight_supplier" jdbcType="DOUBLE" property="freightSupplier" />
+    <result column="freight_jixi" jdbcType="DOUBLE" property="freightJixi" />
+    <result column="freight_customer" jdbcType="DOUBLE" property="freightCustomer" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    time_month, sell_sums, sell_sums_rateGrowth, sell_counts, sell_counts_rateGrowth, 
+    sell_sums_avg, sell_sums_dayAvg, sell_counts_dayAvg, pick_sums, real_grossProfit, 
+    pin_off_itemOffset, grossMargin, freightPro, freight_supplier, freight_jixi, freight_customer, 
+    remark
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.AllorderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from allorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from allorder
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from allorder
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.AllorderExample">
+    delete from allorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Allorder">
+    insert into allorder (time_month, sell_sums, sell_sums_rateGrowth, 
+      sell_counts, sell_counts_rateGrowth, sell_sums_avg, 
+      sell_sums_dayAvg, sell_counts_dayAvg, pick_sums, 
+      real_grossProfit, pin_off_itemOffset, grossMargin, 
+      freightPro, freight_supplier, freight_jixi, 
+      freight_customer, remark)
+    values (#{timeMonth,jdbcType=VARCHAR}, #{sellSums,jdbcType=DOUBLE}, #{sellSumsRategrowth,jdbcType=VARCHAR}, 
+      #{sellCounts,jdbcType=INTEGER}, #{sellCountsRategrowth,jdbcType=VARCHAR}, #{sellSumsAvg,jdbcType=DOUBLE}, 
+      #{sellSumsDayavg,jdbcType=DOUBLE}, #{sellCountsDayavg,jdbcType=DOUBLE}, #{pickSums,jdbcType=DOUBLE}, 
+      #{realGrossprofit,jdbcType=DOUBLE}, #{pinOffItemoffset,jdbcType=DOUBLE}, #{grossmargin,jdbcType=VARCHAR}, 
+      #{freightpro,jdbcType=VARCHAR}, #{freightSupplier,jdbcType=DOUBLE}, #{freightJixi,jdbcType=DOUBLE}, 
+      #{freightCustomer,jdbcType=DOUBLE}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Allorder">
+    insert into allorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="timeMonth != null">
+        time_month,
+      </if>
+      <if test="sellSums != null">
+        sell_sums,
+      </if>
+      <if test="sellSumsRategrowth != null">
+        sell_sums_rateGrowth,
+      </if>
+      <if test="sellCounts != null">
+        sell_counts,
+      </if>
+      <if test="sellCountsRategrowth != null">
+        sell_counts_rateGrowth,
+      </if>
+      <if test="sellSumsAvg != null">
+        sell_sums_avg,
+      </if>
+      <if test="sellSumsDayavg != null">
+        sell_sums_dayAvg,
+      </if>
+      <if test="sellCountsDayavg != null">
+        sell_counts_dayAvg,
+      </if>
+      <if test="pickSums != null">
+        pick_sums,
+      </if>
+      <if test="realGrossprofit != null">
+        real_grossProfit,
+      </if>
+      <if test="pinOffItemoffset != null">
+        pin_off_itemOffset,
+      </if>
+      <if test="grossmargin != null">
+        grossMargin,
+      </if>
+      <if test="freightpro != null">
+        freightPro,
+      </if>
+      <if test="freightSupplier != null">
+        freight_supplier,
+      </if>
+      <if test="freightJixi != null">
+        freight_jixi,
+      </if>
+      <if test="freightCustomer != null">
+        freight_customer,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="timeMonth != null">
+        #{timeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="sellSums != null">
+        #{sellSums,jdbcType=DOUBLE},
+      </if>
+      <if test="sellSumsRategrowth != null">
+        #{sellSumsRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="sellCounts != null">
+        #{sellCounts,jdbcType=INTEGER},
+      </if>
+      <if test="sellCountsRategrowth != null">
+        #{sellCountsRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="sellSumsAvg != null">
+        #{sellSumsAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="sellSumsDayavg != null">
+        #{sellSumsDayavg,jdbcType=DOUBLE},
+      </if>
+      <if test="sellCountsDayavg != null">
+        #{sellCountsDayavg,jdbcType=DOUBLE},
+      </if>
+      <if test="pickSums != null">
+        #{pickSums,jdbcType=DOUBLE},
+      </if>
+      <if test="realGrossprofit != null">
+        #{realGrossprofit,jdbcType=DOUBLE},
+      </if>
+      <if test="pinOffItemoffset != null">
+        #{pinOffItemoffset,jdbcType=DOUBLE},
+      </if>
+      <if test="grossmargin != null">
+        #{grossmargin,jdbcType=VARCHAR},
+      </if>
+      <if test="freightpro != null">
+        #{freightpro,jdbcType=VARCHAR},
+      </if>
+      <if test="freightSupplier != null">
+        #{freightSupplier,jdbcType=DOUBLE},
+      </if>
+      <if test="freightJixi != null">
+        #{freightJixi,jdbcType=DOUBLE},
+      </if>
+      <if test="freightCustomer != null">
+        #{freightCustomer,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.AllorderExample" resultType="java.lang.Long">
+    select count(*) from allorder
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update allorder
+    <set>
+      <if test="record.timeMonth != null">
+        time_month = #{record.timeMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellSums != null">
+        sell_sums = #{record.sellSums,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sellSumsRategrowth != null">
+        sell_sums_rateGrowth = #{record.sellSumsRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellCounts != null">
+        sell_counts = #{record.sellCounts,jdbcType=INTEGER},
+      </if>
+      <if test="record.sellCountsRategrowth != null">
+        sell_counts_rateGrowth = #{record.sellCountsRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellSumsAvg != null">
+        sell_sums_avg = #{record.sellSumsAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sellSumsDayavg != null">
+        sell_sums_dayAvg = #{record.sellSumsDayavg,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sellCountsDayavg != null">
+        sell_counts_dayAvg = #{record.sellCountsDayavg,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pickSums != null">
+        pick_sums = #{record.pickSums,jdbcType=DOUBLE},
+      </if>
+      <if test="record.realGrossprofit != null">
+        real_grossProfit = #{record.realGrossprofit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pinOffItemoffset != null">
+        pin_off_itemOffset = #{record.pinOffItemoffset,jdbcType=DOUBLE},
+      </if>
+      <if test="record.grossmargin != null">
+        grossMargin = #{record.grossmargin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freightpro != null">
+        freightPro = #{record.freightpro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freightSupplier != null">
+        freight_supplier = #{record.freightSupplier,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freightJixi != null">
+        freight_jixi = #{record.freightJixi,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freightCustomer != null">
+        freight_customer = #{record.freightCustomer,jdbcType=DOUBLE},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update allorder
+    set time_month = #{record.timeMonth,jdbcType=VARCHAR},
+      sell_sums = #{record.sellSums,jdbcType=DOUBLE},
+      sell_sums_rateGrowth = #{record.sellSumsRategrowth,jdbcType=VARCHAR},
+      sell_counts = #{record.sellCounts,jdbcType=INTEGER},
+      sell_counts_rateGrowth = #{record.sellCountsRategrowth,jdbcType=VARCHAR},
+      sell_sums_avg = #{record.sellSumsAvg,jdbcType=DOUBLE},
+      sell_sums_dayAvg = #{record.sellSumsDayavg,jdbcType=DOUBLE},
+      sell_counts_dayAvg = #{record.sellCountsDayavg,jdbcType=DOUBLE},
+      pick_sums = #{record.pickSums,jdbcType=DOUBLE},
+      real_grossProfit = #{record.realGrossprofit,jdbcType=DOUBLE},
+      pin_off_itemOffset = #{record.pinOffItemoffset,jdbcType=DOUBLE},
+      grossMargin = #{record.grossmargin,jdbcType=VARCHAR},
+      freightPro = #{record.freightpro,jdbcType=VARCHAR},
+      freight_supplier = #{record.freightSupplier,jdbcType=DOUBLE},
+      freight_jixi = #{record.freightJixi,jdbcType=DOUBLE},
+      freight_customer = #{record.freightCustomer,jdbcType=DOUBLE},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Allorder">
+    update allorder
+    <set>
+      <if test="sellSums != null">
+        sell_sums = #{sellSums,jdbcType=DOUBLE},
+      </if>
+      <if test="sellSumsRategrowth != null">
+        sell_sums_rateGrowth = #{sellSumsRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="sellCounts != null">
+        sell_counts = #{sellCounts,jdbcType=INTEGER},
+      </if>
+      <if test="sellCountsRategrowth != null">
+        sell_counts_rateGrowth = #{sellCountsRategrowth,jdbcType=VARCHAR},
+      </if>
+      <if test="sellSumsAvg != null">
+        sell_sums_avg = #{sellSumsAvg,jdbcType=DOUBLE},
+      </if>
+      <if test="sellSumsDayavg != null">
+        sell_sums_dayAvg = #{sellSumsDayavg,jdbcType=DOUBLE},
+      </if>
+      <if test="sellCountsDayavg != null">
+        sell_counts_dayAvg = #{sellCountsDayavg,jdbcType=DOUBLE},
+      </if>
+      <if test="pickSums != null">
+        pick_sums = #{pickSums,jdbcType=DOUBLE},
+      </if>
+      <if test="realGrossprofit != null">
+        real_grossProfit = #{realGrossprofit,jdbcType=DOUBLE},
+      </if>
+      <if test="pinOffItemoffset != null">
+        pin_off_itemOffset = #{pinOffItemoffset,jdbcType=DOUBLE},
+      </if>
+      <if test="grossmargin != null">
+        grossMargin = #{grossmargin,jdbcType=VARCHAR},
+      </if>
+      <if test="freightpro != null">
+        freightPro = #{freightpro,jdbcType=VARCHAR},
+      </if>
+      <if test="freightSupplier != null">
+        freight_supplier = #{freightSupplier,jdbcType=DOUBLE},
+      </if>
+      <if test="freightJixi != null">
+        freight_jixi = #{freightJixi,jdbcType=DOUBLE},
+      </if>
+      <if test="freightCustomer != null">
+        freight_customer = #{freightCustomer,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Allorder">
+    update allorder
+    set sell_sums = #{sellSums,jdbcType=DOUBLE},
+      sell_sums_rateGrowth = #{sellSumsRategrowth,jdbcType=VARCHAR},
+      sell_counts = #{sellCounts,jdbcType=INTEGER},
+      sell_counts_rateGrowth = #{sellCountsRategrowth,jdbcType=VARCHAR},
+      sell_sums_avg = #{sellSumsAvg,jdbcType=DOUBLE},
+      sell_sums_dayAvg = #{sellSumsDayavg,jdbcType=DOUBLE},
+      sell_counts_dayAvg = #{sellCountsDayavg,jdbcType=DOUBLE},
+      pick_sums = #{pickSums,jdbcType=DOUBLE},
+      real_grossProfit = #{realGrossprofit,jdbcType=DOUBLE},
+      pin_off_itemOffset = #{pinOffItemoffset,jdbcType=DOUBLE},
+      grossMargin = #{grossmargin,jdbcType=VARCHAR},
+      freightPro = #{freightpro,jdbcType=VARCHAR},
+      freight_supplier = #{freightSupplier,jdbcType=DOUBLE},
+      freight_jixi = #{freightJixi,jdbcType=DOUBLE},
+      freight_customer = #{freightCustomer,jdbcType=DOUBLE},
+      remark = #{remark,jdbcType=VARCHAR}
+    where time_month = #{timeMonth,jdbcType=VARCHAR}
+  </update>
+</mapper>

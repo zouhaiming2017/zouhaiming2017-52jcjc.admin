@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.SupplierdetailMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Supplierdetail">
+    <id column="supplierMonthCode" jdbcType="VARCHAR" property="suppliermonthcode" />
+    <result column="supplierName" jdbcType="VARCHAR" property="suppliername" />
+    <result column="supplierSums" jdbcType="DOUBLE" property="suppliersums" />
+    <result column="supplierFreights" jdbcType="DOUBLE" property="supplierfreights" />
+    <result column="freightPro" jdbcType="VARCHAR" property="freightpro" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    supplierMonthCode, supplierName, supplierSums, supplierFreights, freightPro
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.SupplierdetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from supplierdetail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supplierdetail
+    where supplierMonthCode = #{suppliermonthcode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from supplierdetail
+    where supplierMonthCode = #{suppliermonthcode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.SupplierdetailExample">
+    delete from supplierdetail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Supplierdetail">
+    insert into supplierdetail (supplierMonthCode, supplierName, 
+      supplierSums, supplierFreights, freightPro
+      )
+    values (#{suppliermonthcode,jdbcType=VARCHAR}, #{suppliername,jdbcType=VARCHAR}, 
+      #{suppliersums,jdbcType=DOUBLE}, #{supplierfreights,jdbcType=DOUBLE}, #{freightpro,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Supplierdetail">
+    insert into supplierdetail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="suppliermonthcode != null">
+        supplierMonthCode,
+      </if>
+      <if test="suppliername != null">
+        supplierName,
+      </if>
+      <if test="suppliersums != null">
+        supplierSums,
+      </if>
+      <if test="supplierfreights != null">
+        supplierFreights,
+      </if>
+      <if test="freightpro != null">
+        freightPro,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="suppliermonthcode != null">
+        #{suppliermonthcode,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliername != null">
+        #{suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliersums != null">
+        #{suppliersums,jdbcType=DOUBLE},
+      </if>
+      <if test="supplierfreights != null">
+        #{supplierfreights,jdbcType=DOUBLE},
+      </if>
+      <if test="freightpro != null">
+        #{freightpro,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.SupplierdetailExample" resultType="java.lang.Long">
+    select count(*) from supplierdetail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update supplierdetail
+    <set>
+      <if test="record.suppliermonthcode != null">
+        supplierMonthCode = #{record.suppliermonthcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliername != null">
+        supplierName = #{record.suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliersums != null">
+        supplierSums = #{record.suppliersums,jdbcType=DOUBLE},
+      </if>
+      <if test="record.supplierfreights != null">
+        supplierFreights = #{record.supplierfreights,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freightpro != null">
+        freightPro = #{record.freightpro,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update supplierdetail
+    set supplierMonthCode = #{record.suppliermonthcode,jdbcType=VARCHAR},
+      supplierName = #{record.suppliername,jdbcType=VARCHAR},
+      supplierSums = #{record.suppliersums,jdbcType=DOUBLE},
+      supplierFreights = #{record.supplierfreights,jdbcType=DOUBLE},
+      freightPro = #{record.freightpro,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Supplierdetail">
+    update supplierdetail
+    <set>
+      <if test="suppliername != null">
+        supplierName = #{suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliersums != null">
+        supplierSums = #{suppliersums,jdbcType=DOUBLE},
+      </if>
+      <if test="supplierfreights != null">
+        supplierFreights = #{supplierfreights,jdbcType=DOUBLE},
+      </if>
+      <if test="freightpro != null">
+        freightPro = #{freightpro,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where supplierMonthCode = #{suppliermonthcode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Supplierdetail">
+    update supplierdetail
+    set supplierName = #{suppliername,jdbcType=VARCHAR},
+      supplierSums = #{suppliersums,jdbcType=DOUBLE},
+      supplierFreights = #{supplierfreights,jdbcType=DOUBLE},
+      freightPro = #{freightpro,jdbcType=VARCHAR}
+    where supplierMonthCode = #{suppliermonthcode,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.CommissionMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Commission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="T1" jdbcType="DOUBLE" property="t1" />
+    <result column="T2" jdbcType="DOUBLE" property="t2" />
+    <result column="T3" jdbcType="DOUBLE" property="t3" />
+    <result column="T4" jdbcType="DOUBLE" property="t4" />
+    <result column="T5" jdbcType="DOUBLE" property="t5" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, T1, T2, T3, T4, T5
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.CommissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from commission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from commission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from commission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.CommissionExample">
+    delete from commission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Commission">
+    insert into commission (id, T1, T2, T3, 
+      T4, T5)
+    values (#{id,jdbcType=INTEGER}, #{t1,jdbcType=DOUBLE}, #{t2,jdbcType=DOUBLE}, #{t3,jdbcType=DOUBLE}, 
+      #{t4,jdbcType=DOUBLE}, #{t5,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Commission">
+    insert into commission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="t1 != null">
+        T1,
+      </if>
+      <if test="t2 != null">
+        T2,
+      </if>
+      <if test="t3 != null">
+        T3,
+      </if>
+      <if test="t4 != null">
+        T4,
+      </if>
+      <if test="t5 != null">
+        T5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="t1 != null">
+        #{t1,jdbcType=DOUBLE},
+      </if>
+      <if test="t2 != null">
+        #{t2,jdbcType=DOUBLE},
+      </if>
+      <if test="t3 != null">
+        #{t3,jdbcType=DOUBLE},
+      </if>
+      <if test="t4 != null">
+        #{t4,jdbcType=DOUBLE},
+      </if>
+      <if test="t5 != null">
+        #{t5,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.CommissionExample" resultType="java.lang.Long">
+    select count(*) from commission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update commission
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.t1 != null">
+        T1 = #{record.t1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.t2 != null">
+        T2 = #{record.t2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.t3 != null">
+        T3 = #{record.t3,jdbcType=DOUBLE},
+      </if>
+      <if test="record.t4 != null">
+        T4 = #{record.t4,jdbcType=DOUBLE},
+      </if>
+      <if test="record.t5 != null">
+        T5 = #{record.t5,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update commission
+    set id = #{record.id,jdbcType=INTEGER},
+      T1 = #{record.t1,jdbcType=DOUBLE},
+      T2 = #{record.t2,jdbcType=DOUBLE},
+      T3 = #{record.t3,jdbcType=DOUBLE},
+      T4 = #{record.t4,jdbcType=DOUBLE},
+      T5 = #{record.t5,jdbcType=DOUBLE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Commission">
+    update commission
+    <set>
+      <if test="t1 != null">
+        T1 = #{t1,jdbcType=DOUBLE},
+      </if>
+      <if test="t2 != null">
+        T2 = #{t2,jdbcType=DOUBLE},
+      </if>
+      <if test="t3 != null">
+        T3 = #{t3,jdbcType=DOUBLE},
+      </if>
+      <if test="t4 != null">
+        T4 = #{t4,jdbcType=DOUBLE},
+      </if>
+      <if test="t5 != null">
+        T5 = #{t5,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Commission">
+    update commission
+    set T1 = #{t1,jdbcType=DOUBLE},
+      T2 = #{t2,jdbcType=DOUBLE},
+      T3 = #{t3,jdbcType=DOUBLE},
+      T4 = #{t4,jdbcType=DOUBLE},
+      T5 = #{t5,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

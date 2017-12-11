@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.CustomerdetailMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Customerdetail">
+    <id column="customerMonthCode" jdbcType="VARCHAR" property="customermonthcode" />
+    <result column="customerName" jdbcType="VARCHAR" property="customername" />
+    <result column="sellman" jdbcType="VARCHAR" property="sellman" />
+    <result column="discountPrices" jdbcType="DOUBLE" property="discountprices" />
+    <result column="freight" jdbcType="DOUBLE" property="freight" />
+    <result column="freightPro" jdbcType="VARCHAR" property="freightpro" />
+    <result column="count" jdbcType="BIGINT" property="count" />
+    <result column="customerType" jdbcType="VARCHAR" property="customertype" />
+    <result column="commissionPro" jdbcType="VARCHAR" property="commissionpro" />
+    <result column="sellmanCommission" jdbcType="DOUBLE" property="sellmancommission" />
+    <result column="theMonth" jdbcType="TIMESTAMP" property="themonth" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    customerMonthCode, customerName, sellman, discountPrices, freight, freightPro, count, 
+    customerType, commissionPro, sellmanCommission, theMonth
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.CustomerdetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from customerdetail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customerdetail
+    where customerMonthCode = #{customermonthcode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from customerdetail
+    where customerMonthCode = #{customermonthcode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.CustomerdetailExample">
+    delete from customerdetail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Customerdetail">
+    insert into customerdetail (customerMonthCode, customerName, 
+      sellman, discountPrices, freight, 
+      freightPro, count, customerType, 
+      commissionPro, sellmanCommission, theMonth
+      )
+    values (#{customermonthcode,jdbcType=VARCHAR}, #{customername,jdbcType=VARCHAR}, 
+      #{sellman,jdbcType=VARCHAR}, #{discountprices,jdbcType=DOUBLE}, #{freight,jdbcType=DOUBLE}, 
+      #{freightpro,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT}, #{customertype,jdbcType=VARCHAR}, 
+      #{commissionpro,jdbcType=VARCHAR}, #{sellmancommission,jdbcType=DOUBLE}, #{themonth,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Customerdetail">
+    insert into customerdetail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customermonthcode != null">
+        customerMonthCode,
+      </if>
+      <if test="customername != null">
+        customerName,
+      </if>
+      <if test="sellman != null">
+        sellman,
+      </if>
+      <if test="discountprices != null">
+        discountPrices,
+      </if>
+      <if test="freight != null">
+        freight,
+      </if>
+      <if test="freightpro != null">
+        freightPro,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="customertype != null">
+        customerType,
+      </if>
+      <if test="commissionpro != null">
+        commissionPro,
+      </if>
+      <if test="sellmancommission != null">
+        sellmanCommission,
+      </if>
+      <if test="themonth != null">
+        theMonth,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customermonthcode != null">
+        #{customermonthcode,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null">
+        #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="sellman != null">
+        #{sellman,jdbcType=VARCHAR},
+      </if>
+      <if test="discountprices != null">
+        #{discountprices,jdbcType=DOUBLE},
+      </if>
+      <if test="freight != null">
+        #{freight,jdbcType=DOUBLE},
+      </if>
+      <if test="freightpro != null">
+        #{freightpro,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=BIGINT},
+      </if>
+      <if test="customertype != null">
+        #{customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="commissionpro != null">
+        #{commissionpro,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmancommission != null">
+        #{sellmancommission,jdbcType=DOUBLE},
+      </if>
+      <if test="themonth != null">
+        #{themonth,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.CustomerdetailExample" resultType="java.lang.Long">
+    select count(*) from customerdetail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update customerdetail
+    <set>
+      <if test="record.customermonthcode != null">
+        customerMonthCode = #{record.customermonthcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customername != null">
+        customerName = #{record.customername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellman != null">
+        sellman = #{record.sellman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.discountprices != null">
+        discountPrices = #{record.discountprices,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freight != null">
+        freight = #{record.freight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freightpro != null">
+        freightPro = #{record.freightpro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.count != null">
+        count = #{record.count,jdbcType=BIGINT},
+      </if>
+      <if test="record.customertype != null">
+        customerType = #{record.customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commissionpro != null">
+        commissionPro = #{record.commissionpro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellmancommission != null">
+        sellmanCommission = #{record.sellmancommission,jdbcType=DOUBLE},
+      </if>
+      <if test="record.themonth != null">
+        theMonth = #{record.themonth,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update customerdetail
+    set customerMonthCode = #{record.customermonthcode,jdbcType=VARCHAR},
+      customerName = #{record.customername,jdbcType=VARCHAR},
+      sellman = #{record.sellman,jdbcType=VARCHAR},
+      discountPrices = #{record.discountprices,jdbcType=DOUBLE},
+      freight = #{record.freight,jdbcType=DOUBLE},
+      freightPro = #{record.freightpro,jdbcType=VARCHAR},
+      count = #{record.count,jdbcType=BIGINT},
+      customerType = #{record.customertype,jdbcType=VARCHAR},
+      commissionPro = #{record.commissionpro,jdbcType=VARCHAR},
+      sellmanCommission = #{record.sellmancommission,jdbcType=DOUBLE},
+      theMonth = #{record.themonth,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Customerdetail">
+    update customerdetail
+    <set>
+      <if test="customername != null">
+        customerName = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="sellman != null">
+        sellman = #{sellman,jdbcType=VARCHAR},
+      </if>
+      <if test="discountprices != null">
+        discountPrices = #{discountprices,jdbcType=DOUBLE},
+      </if>
+      <if test="freight != null">
+        freight = #{freight,jdbcType=DOUBLE},
+      </if>
+      <if test="freightpro != null">
+        freightPro = #{freightpro,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=BIGINT},
+      </if>
+      <if test="customertype != null">
+        customerType = #{customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="commissionpro != null">
+        commissionPro = #{commissionpro,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmancommission != null">
+        sellmanCommission = #{sellmancommission,jdbcType=DOUBLE},
+      </if>
+      <if test="themonth != null">
+        theMonth = #{themonth,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where customerMonthCode = #{customermonthcode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Customerdetail">
+    update customerdetail
+    set customerName = #{customername,jdbcType=VARCHAR},
+      sellman = #{sellman,jdbcType=VARCHAR},
+      discountPrices = #{discountprices,jdbcType=DOUBLE},
+      freight = #{freight,jdbcType=DOUBLE},
+      freightPro = #{freightpro,jdbcType=VARCHAR},
+      count = #{count,jdbcType=BIGINT},
+      customerType = #{customertype,jdbcType=VARCHAR},
+      commissionPro = #{commissionpro,jdbcType=VARCHAR},
+      sellmanCommission = #{sellmancommission,jdbcType=DOUBLE},
+      theMonth = #{themonth,jdbcType=TIMESTAMP}
+    where customerMonthCode = #{customermonthcode,jdbcType=VARCHAR}
+  </update>
+</mapper>

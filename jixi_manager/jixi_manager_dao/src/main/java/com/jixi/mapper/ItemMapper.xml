@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Item">
+    <id column="itemCode" jdbcType="VARCHAR" property="itemcode" />
+    <result column="supplierName" jdbcType="VARCHAR" property="suppliername" />
+    <result column="itemName" jdbcType="VARCHAR" property="itemname" />
+    <result column="sellPoint" jdbcType="VARCHAR" property="sellpoint" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="cid" jdbcType="BIGINT" property="cid" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="standard" jdbcType="VARCHAR" property="standard" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="brandName" jdbcType="VARCHAR" property="brandname" />
+    <result column="packingSize" jdbcType="VARCHAR" property="packingsize" />
+    <result column="chargeUnit" jdbcType="VARCHAR" property="chargeunit" />
+    <result column="inprice" jdbcType="DOUBLE" property="inprice" />
+    <result column="outprice" jdbcType="DOUBLE" property="outprice" />
+    <result column="counts" jdbcType="INTEGER" property="counts" />
+    <result column="outCount" jdbcType="INTEGER" property="outcount" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    itemCode, supplierName, itemName, sellPoint, image, cid, status, standard, model, 
+    brandName, packingSize, chargeUnit, inprice, outprice, counts, outCount, count, created, 
+    updated
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.ItemExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from item
+    where itemCode = #{itemcode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectDistinctSupplier" resultMap="BaseResultMap">
+    select distinct supplierName from item
+  </select>
+
+  <select id="selectDistinctBrandName" resultMap="BaseResultMap">
+    select distinct brandName from item
+  </select>
+
+  <select id="like" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from item
+    <where>
+      <if test="itemname!=null">
+        and itemName like #{itemname,jdbcType=VARCHAR}
+      </if>
+      <if test="supplier!=null">
+        and supplierName= #{supplier,jdbcType=VARCHAR}
+      </if>
+      <if test="brandname!=null">
+        and brandName= #{brandname,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from item
+    where itemCode = #{itemcode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.ItemExample">
+    delete from item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Item">
+    insert into item (itemCode, supplierName, itemName, 
+      sellPoint, image, cid, 
+      status, standard, model, 
+      brandName, packingSize, chargeUnit, 
+      inprice, outprice, counts, 
+      outCount, count, created, 
+      updated)
+    values (#{itemcode,jdbcType=VARCHAR}, #{suppliername,jdbcType=VARCHAR}, #{itemname,jdbcType=VARCHAR}, 
+      #{sellpoint,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{cid,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{standard,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{brandname,jdbcType=VARCHAR}, #{packingsize,jdbcType=VARCHAR}, #{chargeunit,jdbcType=VARCHAR}, 
+      #{inprice,jdbcType=DOUBLE}, #{outprice,jdbcType=DOUBLE}, #{counts,jdbcType=INTEGER}, 
+      #{outcount,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Item">
+    insert into item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="itemcode != null">
+        itemCode,
+      </if>
+      <if test="suppliername != null">
+        supplierName,
+      </if>
+      <if test="itemname != null">
+        itemName,
+      </if>
+      <if test="sellpoint != null">
+        sellPoint,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="standard != null">
+        standard,
+      </if>
+      <if test="model != null">
+        model,
+      </if>
+      <if test="brandname != null">
+        brandName,
+      </if>
+      <if test="packingsize != null">
+        packingSize,
+      </if>
+      <if test="chargeunit != null">
+        chargeUnit,
+      </if>
+      <if test="inprice != null">
+        inprice,
+      </if>
+      <if test="outprice != null">
+        outprice,
+      </if>
+      <if test="counts != null">
+        counts,
+      </if>
+      <if test="outcount != null">
+        outCount,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="itemcode != null">
+        #{itemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="suppliername != null">
+        #{suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="itemname != null">
+        #{itemname,jdbcType=VARCHAR},
+      </if>
+      <if test="sellpoint != null">
+        #{sellpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="standard != null">
+        #{standard,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="brandname != null">
+        #{brandname,jdbcType=VARCHAR},
+      </if>
+      <if test="packingsize != null">
+        #{packingsize,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeunit != null">
+        #{chargeunit,jdbcType=VARCHAR},
+      </if>
+      <if test="inprice != null">
+        #{inprice,jdbcType=DOUBLE},
+      </if>
+      <if test="outprice != null">
+        #{outprice,jdbcType=DOUBLE},
+      </if>
+      <if test="counts != null">
+        #{counts,jdbcType=INTEGER},
+      </if>
+      <if test="outcount != null">
+        #{outcount,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.ItemExample" resultType="java.lang.Long">
+    select count(*) from item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update item
+    <set>
+      <if test="record.itemcode != null">
+        itemCode = #{record.itemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suppliername != null">
+        supplierName = #{record.suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemname != null">
+        itemName = #{record.itemname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellpoint != null">
+        sellPoint = #{record.sellpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cid != null">
+        cid = #{record.cid,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.standard != null">
+        standard = #{record.standard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.model != null">
+        model = #{record.model,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandname != null">
+        brandName = #{record.brandname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.packingsize != null">
+        packingSize = #{record.packingsize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeunit != null">
+        chargeUnit = #{record.chargeunit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inprice != null">
+        inprice = #{record.inprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.outprice != null">
+        outprice = #{record.outprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.counts != null">
+        counts = #{record.counts,jdbcType=INTEGER},
+      </if>
+      <if test="record.outcount != null">
+        outCount = #{record.outcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.count != null">
+        count = #{record.count,jdbcType=INTEGER},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update item
+    set itemCode = #{record.itemcode,jdbcType=VARCHAR},
+      supplierName = #{record.suppliername,jdbcType=VARCHAR},
+      itemName = #{record.itemname,jdbcType=VARCHAR},
+      sellPoint = #{record.sellpoint,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      cid = #{record.cid,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT},
+      standard = #{record.standard,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
+      brandName = #{record.brandname,jdbcType=VARCHAR},
+      packingSize = #{record.packingsize,jdbcType=VARCHAR},
+      chargeUnit = #{record.chargeunit,jdbcType=VARCHAR},
+      inprice = #{record.inprice,jdbcType=DOUBLE},
+      outprice = #{record.outprice,jdbcType=DOUBLE},
+      counts = #{record.counts,jdbcType=INTEGER},
+      outCount = #{record.outcount,jdbcType=INTEGER},
+      count = #{record.count,jdbcType=INTEGER},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Item">
+    update item
+    <set>
+      <if test="suppliername != null">
+        supplierName = #{suppliername,jdbcType=VARCHAR},
+      </if>
+      <if test="itemname != null">
+        itemName = #{itemname,jdbcType=VARCHAR},
+      </if>
+      <if test="sellpoint != null">
+        sellPoint = #{sellpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="standard != null">
+        standard = #{standard,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="brandname != null">
+        brandName = #{brandname,jdbcType=VARCHAR},
+      </if>
+      <if test="packingsize != null">
+        packingSize = #{packingsize,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeunit != null">
+        chargeUnit = #{chargeunit,jdbcType=VARCHAR},
+      </if>
+      <if test="inprice != null">
+        inprice = #{inprice,jdbcType=DOUBLE},
+      </if>
+      <if test="outprice != null">
+        outprice = #{outprice,jdbcType=DOUBLE},
+      </if>
+      <if test="counts != null">
+        counts = #{counts,jdbcType=INTEGER},
+      </if>
+      <if test="outcount != null">
+        outCount = #{outcount,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where itemCode = #{itemcode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Item">
+    update item
+    set supplierName = #{suppliername,jdbcType=VARCHAR},
+      itemName = #{itemname,jdbcType=VARCHAR},
+      sellPoint = #{sellpoint,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      standard = #{standard,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      brandName = #{brandname,jdbcType=VARCHAR},
+      packingSize = #{packingsize,jdbcType=VARCHAR},
+      chargeUnit = #{chargeunit,jdbcType=VARCHAR},
+      inprice = #{inprice,jdbcType=DOUBLE},
+      outprice = #{outprice,jdbcType=DOUBLE},
+      counts = #{counts,jdbcType=INTEGER},
+      outCount = #{outcount,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where itemCode = #{itemcode,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.SellmanMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.Sellman">
+    <id column="sellmanCode" jdbcType="VARCHAR" property="sellmancode" />
+    <result column="sellmanName" jdbcType="VARCHAR" property="sellmanname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="sellmanAddress" jdbcType="VARCHAR" property="sellmanaddress" />
+    <result column="leader" jdbcType="VARCHAR" property="leader" />
+    <result column="sellmanNature" jdbcType="VARCHAR" property="sellmannature" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sellmanCode, sellmanName, phone, sellmanAddress, leader, sellmanNature
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.SellmanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sellman
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sellman
+    where sellmanCode = #{sellmancode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectDistinctSellmanAddress" resultMap="BaseResultMap">
+    select distinct sellmanAddress from sellman
+  </select>
+
+  <select id="selectDistinctLeader" resultMap="BaseResultMap">
+    select distinct leader from sellman
+  </select>
+
+  <select id="selectDistinctSellmanNature" resultMap="BaseResultMap">
+    select distinct sellmanNature from sellman
+  </select>
+
+  <select id="like" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sellman
+    <where>
+      <if test="sellmanaddress!=null">
+        and sellmanAddress=#{sellmanaddress,jdbcType=VARCHAR}
+      </if>
+      <if test="leader!=null">
+        and leader= #{leader,jdbcType=VARCHAR}
+      </if>
+      <if test="sellmannature!=null">
+        and sellmanNature= #{sellmannature,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sellman
+    where sellmanCode = #{sellmancode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.SellmanExample">
+    delete from sellman
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.Sellman">
+    insert into sellman (sellmanCode, sellmanName, phone, 
+      sellmanAddress, leader, sellmanNature
+      )
+    values (#{sellmancode,jdbcType=VARCHAR}, #{sellmanname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{sellmanaddress,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, #{sellmannature,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.Sellman">
+    insert into sellman
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sellmancode != null">
+        sellmanCode,
+      </if>
+      <if test="sellmanname != null">
+        sellmanName,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="sellmanaddress != null">
+        sellmanAddress,
+      </if>
+      <if test="leader != null">
+        leader,
+      </if>
+      <if test="sellmannature != null">
+        sellmanNature,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sellmancode != null">
+        #{sellmancode,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmanname != null">
+        #{sellmanname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmanaddress != null">
+        #{sellmanaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null">
+        #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmannature != null">
+        #{sellmannature,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.SellmanExample" resultType="java.lang.Long">
+    select count(*) from sellman
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sellman
+    <set>
+      <if test="record.sellmancode != null">
+        sellmanCode = #{record.sellmancode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellmanname != null">
+        sellmanName = #{record.sellmanname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellmanaddress != null">
+        sellmanAddress = #{record.sellmanaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.leader != null">
+        leader = #{record.leader,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellmannature != null">
+        sellmanNature = #{record.sellmannature,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sellman
+    set sellmanCode = #{record.sellmancode,jdbcType=VARCHAR},
+      sellmanName = #{record.sellmanname,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      sellmanAddress = #{record.sellmanaddress,jdbcType=VARCHAR},
+      leader = #{record.leader,jdbcType=VARCHAR},
+      sellmanNature = #{record.sellmannature,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.Sellman">
+    update sellman
+    <set>
+      <if test="sellmanname != null">
+        sellmanName = #{sellmanname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmanaddress != null">
+        sellmanAddress = #{sellmanaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null">
+        leader = #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="sellmannature != null">
+        sellmanNature = #{sellmannature,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sellmanCode = #{sellmancode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.Sellman">
+    update sellman
+    set sellmanName = #{sellmanname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      sellmanAddress = #{sellmanaddress,jdbcType=VARCHAR},
+      leader = #{leader,jdbcType=VARCHAR},
+      sellmanNature = #{sellmannature,jdbcType=VARCHAR}
+    where sellmanCode = #{sellmancode,jdbcType=VARCHAR}
+  </update>
+</mapper>

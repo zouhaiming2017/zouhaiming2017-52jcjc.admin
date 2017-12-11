@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 自定义Realm -->
+    <bean id="myRealm" class="com.jixi.realm.MyRealm"/>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <!-- Shiro过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    <!-- Shiro的核心安全接口,这个属性是必须的 -->
+    <property name="securityManager" ref="securityManager"/>
+    <!-- 身份认证失败，则跳转到登录页面的配置 -->
+    <property name="loginUrl" value="/index.jsp"/>
+    <!-- 权限认证失败，则跳转到指定页面 -->
+    <property name="unauthorizedUrl" value="/fail.jsp"/>
+    <!-- Shiro连接约束配置,即过滤链的定义 -->
+    <property name="filterChainDefinitions">
+    <value>
+    /charts/sum-year=perms["yearSumCharts:select"]
+    /charts/sum-month=perms["monthSumCharts:select"]
+    /charts/pie-chart=perms["pieChart:select"]
+    /charts/map-chart=perms["mapChart:select"]
+    /charts/sellman-year=perms["sellmanYearOrderChart:select"]
+
+    /permission/*=roles[超级管理员]
+    /role/*=roles[超级管理员]
+    /user/list=roles[超级管理员]
+
+    /pickPriceMaster/*=perms["pickPriceMaster:select"]
+    /sellPriceMaster/*=perms["sellPriceMaster:select"]
+    /pickOrderSum/*=perms["pickOrderSum:select"]
+    /sellorderSum/*=perms["sellOrderSum:select"]
+    /sellorderSumByFinance/*=perms["sellorderSumByFinance:select"]
+    /pickorderSumByFinance/*=perms["pickorderSumByFinance:select"]
+    /taxService/*=perms["taxService:select"]
+    /customer/*=perms["customer:select"]
+    /item/*=perms["item:select"]
+    /pickorderItem/*=perms["pickorderItem:select"]
+    /sellman/*=perms["sellman:select"]
+    /supplier/*=perms["supplier:select"]
+    /dataShow/*=perms["dataShow:customerTypeDetail"]
+    /customerDetail/*=perms["customerDetail:getCustomerDetail"]
+    /supplierDetail/*=perms["supplierDetail:getSupplierDetail"]
+    /sellmanDetail/*=perms["sellmanDetail:getSellmanDetail"]
+    /allOrder/*=perms["allOrder:getAllorderList"]
+    /sellorderAll/*=perms["sellorderAll:getSellorderList"]
+    /sellorderJc/*=perms["sellorderJc:select"]
+    /jixitruckOrder/*=perms["jixitruckOrder:select"]
+
+    </value>
+    </property>
+    </bean>
+    <!--url=拦截器[参数]，拦截器[参数]”；即如果当前请求的url匹配[urls]部分的某个url模式，将会执行其配置的拦截器-->
+    <!--anon拦截器表示匿名访问（即不需要登录即可访问）；-->
+    <!--authc拦截器表示需要身份认证通过后才能访问；-->
+    <!--roles[admin]拦截器表示需要有admin角色授权才能访问；-->
+    <!--perms["user:create"]拦截器表示需要有“user:create”权限才能访问-->
+
+
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 开启Shiro注解 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+    <!-- 通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 传播行为 -->
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="create*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- 切面 -->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice"
+                     pointcut="execution(* com.jixi.service.*.*(..))" />
+    </aop:config>
+
+</beans>

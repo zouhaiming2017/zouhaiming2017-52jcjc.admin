@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jixi.mapper.SellorderSumMapper">
+  <resultMap id="BaseResultMap" type="com.jixi.pojo.SellorderSum">
+    <id column="sellOrderCode" jdbcType="VARCHAR" property="sellordercode" />
+    <result column="sellDate" jdbcType="TIMESTAMP" property="selldate" />
+    <result column="projectName" jdbcType="VARCHAR" property="projectname" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="customerName" jdbcType="VARCHAR" property="customername" />
+    <result column="customerPhone" jdbcType="VARCHAR" property="customerphone" />
+    <result column="customerType" jdbcType="VARCHAR" property="customertype" />
+    <result column="sellman" jdbcType="VARCHAR" property="sellman" />
+    <result column="sendman" jdbcType="VARCHAR" property="sendman" />
+    <result column="pickman" jdbcType="VARCHAR" property="pickman" />
+    <result column="pickmanPhone" jdbcType="VARCHAR" property="pickmanphone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="sendType" jdbcType="VARCHAR" property="sendtype" />
+    <result column="onlineSum" jdbcType="DOUBLE" property="onlinesum" />
+    <result column="underlineSum" jdbcType="DOUBLE" property="underlinesum" />
+    <result column="freight" jdbcType="DOUBLE" property="freight" />
+    <result column="allsum" jdbcType="DOUBLE" property="allsum" />
+    <result column="discountPrice" jdbcType="DOUBLE" property="discountprice" />
+    <result column="commission" jdbcType="DOUBLE" property="commission" />
+    <result column="receivedSum" jdbcType="DOUBLE" property="receivedsum" />
+    <result column="noReceivedSum" jdbcType="DOUBLE" property="noreceivedsum" />
+    <result column="makeTableMan" jdbcType="VARCHAR" property="maketableman" />
+    <result column="ticketStatus" jdbcType="CHAR" property="ticketstatus" />
+    <result column="ticketNo" jdbcType="VARCHAR" property="ticketno" />
+    <result column="allPayStatue" jdbcType="CHAR" property="allpaystatue" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sellOrderCode, sellDate, projectName, company, customerName, customerPhone, customerType, 
+    sellman, sendman, pickman, pickmanPhone, address, sendType, onlineSum, underlineSum, 
+    freight, allsum, discountPrice, commission, receivedSum, noReceivedSum, makeTableMan, 
+    ticketStatus, ticketNo, allPayStatue
+  </sql>
+  <select id="selectByExample" parameterType="com.jixi.pojo.SellorderSumExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sellorder_sum
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause} desc
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sellorder_sum
+    where sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getSumsBySellman" parameterType="map" resultType="java.lang.Double">
+    select sum(discountPrice)  from sellorder_sum
+    <where>
+      <if test="sellman!=null">
+        and sellman=#{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="startDate!=null || endDate!=null ">
+        and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getSumByCustomerType" parameterType="map" resultType="java.lang.Double">
+    select sum(discountPrice)  from sellorder_sum
+    <where>
+      <if test="customertype!=null">
+        and customerType=#{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="startDate!=null || endDate!=null ">
+        and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getCountByCustomerType" parameterType="map" resultType="java.lang.Long">
+    select count(*)  from sellorder_sum
+    <where>
+      <if test="customertype!=null">
+        and customerType=#{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="startDate!=null || endDate!=null ">
+        and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByCustomerPhone" parameterType="map" resultMap="BaseResultMap">
+    select *  from sellorder_sum
+    <where>
+      <if test="customerphone!=null">
+        and customerPhone=#{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="startDate!=null || endDate!=null ">
+        and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByCustomerName" parameterType="map" resultMap="BaseResultMap">
+    select *  from sellorder_sum
+    <where>
+      <if test="customername!=null">
+        and customerName=#{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="startDate!=null || endDate!=null ">
+        and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectDetailBysellman" parameterType="map" resultMap="BaseResultMap">
+    select *  from sellorder_sum
+    <where>
+      <if test="sellman!=null">
+        and sellman=#{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="startDate!=null || endDate!=null ">
+        and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getSums" parameterType="map" resultType="java.lang.Double">
+    select sum(discountPrice)  from sellorder_sum where  sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  </select>
+
+  <select id="getCustomerCounts" parameterType="map" resultType="java.lang.Integer">
+    select count(distinct(customerPhone)) from sellorder_sum
+      <where>
+        <if test="customertype!=null">
+          and customerType = #{customertype,jdbcType=VARCHAR}
+        </if>
+        <if test="startDate!=null || endDate!=null">
+          and sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+        </if>
+      </where>
+  </select>
+
+  <select id="getOnlineSums" parameterType="map" resultType="java.lang.Double">
+    select sum(onlineSum)  from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getUnderlineSums" parameterType="map" resultType="java.lang.Double">
+    select sum(underlineSum)  from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getDiscountPrices" parameterType="map" resultType="java.lang.Double">
+    select sum(discountPrice)  from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getTfreights" parameterType="map" resultType="java.lang.Double">
+    select sum(freight)  from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getCommissions" parameterType="map" resultType="java.lang.Double">
+    select sum(commission) from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getReceivedSums" parameterType="map" resultType="java.lang.Double">
+    select sum(receivedSum)  from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getNoReceivedSums" parameterType="map" resultType="java.lang.Double">
+    select sum(noReceivedSum)  from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getFreights" parameterType="map" resultType="java.lang.Double">
+    select sum(freight)  from sellorder_sum where  sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  </select>
+
+  <select id="getCount" parameterType="map" resultType="java.lang.Long">
+    select count(*)  from sellorder_sum where  sellDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  </select>
+
+  <select id="getMonthCount"  resultType="java.lang.Long">
+    select count(*)  from sellorder_sum where  date_format(selldate,'%Y-%m')=date_format(now(),'%Y-%m')
+  </select>
+
+  <select id="getWheekCount"  resultType="java.lang.Long">
+    select count(*)  from sellorder_sum where YEARWEEK(date_format(selldate,'%Y-%m-%d')) = YEARWEEK(now())
+  </select>
+
+  <select id="getDayCount"  parameterType="java.lang.String" resultType="java.lang.Long">
+    select count(*)  from sellorder_sum where sellDate=#{selldate,jdbcType=TIMESTAMP}
+  </select>
+
+  <select id="selectBySellman" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sellorder_sum
+    where sellman = #{sellman,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectDistinctProjectname" resultMap="BaseResultMap">
+    select distinct projectName from sellorder_sum order by projectName
+  </select>
+
+  <select id="selectDistinctCustomerType" resultMap="BaseResultMap">
+    select distinct customerType from sellorder_sum order by customerType
+  </select>
+
+  <select id="selectDistinctCustomerTypeBySellman" resultMap="BaseResultMap">
+    select distinct customerType from sellorder_sum where sellman = #{sellman,jdbcType=VARCHAR} order by customerType
+  </select>
+
+  <select id="selectDistinctSellman" resultMap="BaseResultMap">
+    select distinct sellman from sellorder_sum order by sellman
+  </select>
+
+  <select id="selectDistinctProjectnameBySellman" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select distinct projectName from sellorder_sum where sellman=#{sellman,jdbcType=VARCHAR} order by projectName
+  </select>
+
+  <select id="selectDistinctCompany" resultMap="BaseResultMap">
+    select distinct company from sellorder_sum order by company
+  </select>
+
+  <select id="selectDistinctAddress" resultMap="BaseResultMap">
+    select distinct address from sellorder_sum order by address
+  </select>
+
+  <select id="selectDistinctCustomerName" resultMap="BaseResultMap">
+    select distinct customerName from sellorder_sum order by customerName
+  </select>
+
+  <select id="selectDistinctCustomerPhone" resultMap="BaseResultMap">
+    select distinct customerPhone from sellorder_sum order by customerPhone
+  </select>
+
+  <select id="like" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sellorder_sum
+    <where>
+      <if test="projectName!=null">
+        and projectName=#{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="company!=null">
+        and company=#{company,jdbcType=VARCHAR}
+      </if>
+      <if test="address!=null">
+        and address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="customertype!=null">
+        and customerType = #{customertype,jdbcType=VARCHAR}
+      </if>
+      <if test="customerphone!=null">
+        and customerPhone = #{customerphone,jdbcType=VARCHAR}
+      </if>
+      <if test="sellman!=null">
+        and sellman = #{sellman,jdbcType=VARCHAR}
+      </if>
+      <if test="ticketstatus!=null">
+        and ticketStatus = #{ticketstatus,jdbcType=CHAR}
+      </if>
+      <if test="allpaystatue!=null">
+        and allPayStatue = #{allpaystatue,jdbcType=VARCHAR}
+      </if>
+      <if test="customername!=null">
+        and customerName = #{customername,jdbcType=VARCHAR}
+      </if>
+      <if test="sellordercode!=null">
+        and sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+      </if>
+      <if test="selldateMin!=null ||selldateMax!=null">
+        and sellDate between #{selldateMin,jdbcType=TIMESTAMP} and #{selldateMax,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sellorder_sum
+    where sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jixi.pojo.SellorderSumExample">
+    delete from sellorder_sum
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jixi.pojo.SellorderSum">
+    insert into sellorder_sum (sellOrderCode, sellDate, projectName, 
+      company, customerName, customerPhone, 
+      customerType, sellman, sendman, 
+      pickman, pickmanPhone, address, 
+      sendType, onlineSum, underlineSum, 
+      freight, allsum, discountPrice, 
+      commission, receivedSum, noReceivedSum, 
+      makeTableMan, ticketStatus, ticketNo, 
+      allPayStatue)
+    values (#{sellordercode,jdbcType=VARCHAR}, #{selldate,jdbcType=TIMESTAMP}, #{projectname,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, #{customername,jdbcType=VARCHAR}, #{customerphone,jdbcType=VARCHAR}, 
+      #{customertype,jdbcType=VARCHAR}, #{sellman,jdbcType=VARCHAR}, #{sendman,jdbcType=VARCHAR}, 
+      #{pickman,jdbcType=VARCHAR}, #{pickmanphone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{sendtype,jdbcType=VARCHAR}, #{onlinesum,jdbcType=DOUBLE}, #{underlinesum,jdbcType=DOUBLE}, 
+      #{freight,jdbcType=DOUBLE}, #{allsum,jdbcType=DOUBLE}, #{discountprice,jdbcType=DOUBLE}, 
+      #{commission,jdbcType=DOUBLE}, #{receivedsum,jdbcType=DOUBLE}, #{noreceivedsum,jdbcType=DOUBLE}, 
+      #{maketableman,jdbcType=VARCHAR}, #{ticketstatus,jdbcType=CHAR}, #{ticketno,jdbcType=VARCHAR}, 
+      #{allpaystatue,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jixi.pojo.SellorderSum">
+    insert into sellorder_sum
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sellordercode != null">
+        sellOrderCode,
+      </if>
+      <if test="selldate != null">
+        sellDate,
+      </if>
+      <if test="projectname != null">
+        projectName,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="customername != null">
+        customerName,
+      </if>
+      <if test="customerphone != null">
+        customerPhone,
+      </if>
+      <if test="customertype != null">
+        customerType,
+      </if>
+      <if test="sellman != null">
+        sellman,
+      </if>
+      <if test="sendman != null">
+        sendman,
+      </if>
+      <if test="pickman != null">
+        pickman,
+      </if>
+      <if test="pickmanphone != null">
+        pickmanPhone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="sendtype != null">
+        sendType,
+      </if>
+      <if test="onlinesum != null">
+        onlineSum,
+      </if>
+      <if test="underlinesum != null">
+        underlineSum,
+      </if>
+      <if test="freight != null">
+        freight,
+      </if>
+      <if test="allsum != null">
+        allsum,
+      </if>
+      <if test="discountprice != null">
+        discountPrice,
+      </if>
+      <if test="commission != null">
+        commission,
+      </if>
+      <if test="receivedsum != null">
+        receivedSum,
+      </if>
+      <if test="noreceivedsum != null">
+        noReceivedSum,
+      </if>
+      <if test="maketableman != null">
+        makeTableMan,
+      </if>
+      <if test="ticketstatus != null">
+        ticketStatus,
+      </if>
+      <if test="ticketno != null">
+        ticketNo,
+      </if>
+      <if test="allpaystatue != null">
+        allPayStatue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sellordercode != null">
+        #{sellordercode,jdbcType=VARCHAR},
+      </if>
+      <if test="selldate != null">
+        #{selldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectname != null">
+        #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null">
+        #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="customerphone != null">
+        #{customerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="customertype != null">
+        #{customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="sellman != null">
+        #{sellman,jdbcType=VARCHAR},
+      </if>
+      <if test="sendman != null">
+        #{sendman,jdbcType=VARCHAR},
+      </if>
+      <if test="pickman != null">
+        #{pickman,jdbcType=VARCHAR},
+      </if>
+      <if test="pickmanphone != null">
+        #{pickmanphone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtype != null">
+        #{sendtype,jdbcType=VARCHAR},
+      </if>
+      <if test="onlinesum != null">
+        #{onlinesum,jdbcType=DOUBLE},
+      </if>
+      <if test="underlinesum != null">
+        #{underlinesum,jdbcType=DOUBLE},
+      </if>
+      <if test="freight != null">
+        #{freight,jdbcType=DOUBLE},
+      </if>
+      <if test="allsum != null">
+        #{allsum,jdbcType=DOUBLE},
+      </if>
+      <if test="discountprice != null">
+        #{discountprice,jdbcType=DOUBLE},
+      </if>
+      <if test="commission != null">
+        #{commission,jdbcType=DOUBLE},
+      </if>
+      <if test="receivedsum != null">
+        #{receivedsum,jdbcType=DOUBLE},
+      </if>
+      <if test="noreceivedsum != null">
+        #{noreceivedsum,jdbcType=DOUBLE},
+      </if>
+      <if test="maketableman != null">
+        #{maketableman,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketstatus != null">
+        #{ticketstatus,jdbcType=CHAR},
+      </if>
+      <if test="ticketno != null">
+        #{ticketno,jdbcType=VARCHAR},
+      </if>
+      <if test="allpaystatue != null">
+        #{allpaystatue,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jixi.pojo.SellorderSumExample" resultType="java.lang.Long">
+    select count(*) from sellorder_sum
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sellorder_sum
+    <set>
+      <if test="record.sellordercode != null">
+        sellOrderCode = #{record.sellordercode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selldate != null">
+        sellDate = #{record.selldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.projectname != null">
+        projectName = #{record.projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.company != null">
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customername != null">
+        customerName = #{record.customername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerphone != null">
+        customerPhone = #{record.customerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customertype != null">
+        customerType = #{record.customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellman != null">
+        sellman = #{record.sellman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendman != null">
+        sendman = #{record.sendman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pickman != null">
+        pickman = #{record.pickman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pickmanphone != null">
+        pickmanPhone = #{record.pickmanphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendtype != null">
+        sendType = #{record.sendtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.onlinesum != null">
+        onlineSum = #{record.onlinesum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.underlinesum != null">
+        underlineSum = #{record.underlinesum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freight != null">
+        freight = #{record.freight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.allsum != null">
+        allsum = #{record.allsum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.discountprice != null">
+        discountPrice = #{record.discountprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.commission != null">
+        commission = #{record.commission,jdbcType=DOUBLE},
+      </if>
+      <if test="record.receivedsum != null">
+        receivedSum = #{record.receivedsum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.noreceivedsum != null">
+        noReceivedSum = #{record.noreceivedsum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.maketableman != null">
+        makeTableMan = #{record.maketableman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketstatus != null">
+        ticketStatus = #{record.ticketstatus,jdbcType=CHAR},
+      </if>
+      <if test="record.ticketno != null">
+        ticketNo = #{record.ticketno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allpaystatue != null">
+        allPayStatue = #{record.allpaystatue,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sellorder_sum
+    set sellOrderCode = #{record.sellordercode,jdbcType=VARCHAR},
+      sellDate = #{record.selldate,jdbcType=TIMESTAMP},
+      projectName = #{record.projectname,jdbcType=VARCHAR},
+      company = #{record.company,jdbcType=VARCHAR},
+      customerName = #{record.customername,jdbcType=VARCHAR},
+      customerPhone = #{record.customerphone,jdbcType=VARCHAR},
+      customerType = #{record.customertype,jdbcType=VARCHAR},
+      sellman = #{record.sellman,jdbcType=VARCHAR},
+      sendman = #{record.sendman,jdbcType=VARCHAR},
+      pickman = #{record.pickman,jdbcType=VARCHAR},
+      pickmanPhone = #{record.pickmanphone,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      sendType = #{record.sendtype,jdbcType=VARCHAR},
+      onlineSum = #{record.onlinesum,jdbcType=DOUBLE},
+      underlineSum = #{record.underlinesum,jdbcType=DOUBLE},
+      freight = #{record.freight,jdbcType=DOUBLE},
+      allsum = #{record.allsum,jdbcType=DOUBLE},
+      discountPrice = #{record.discountprice,jdbcType=DOUBLE},
+      commission = #{record.commission,jdbcType=DOUBLE},
+      receivedSum = #{record.receivedsum,jdbcType=DOUBLE},
+      noReceivedSum = #{record.noreceivedsum,jdbcType=DOUBLE},
+      makeTableMan = #{record.maketableman,jdbcType=VARCHAR},
+      ticketStatus = #{record.ticketstatus,jdbcType=CHAR},
+      ticketNo = #{record.ticketno,jdbcType=VARCHAR},
+      allPayStatue = #{record.allpaystatue,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jixi.pojo.SellorderSum">
+    update sellorder_sum
+    <set>
+      <if test="selldate != null">
+        sellDate = #{selldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectname != null">
+        projectName = #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null">
+        customerName = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="customerphone != null">
+        customerPhone = #{customerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="customertype != null">
+        customerType = #{customertype,jdbcType=VARCHAR},
+      </if>
+      <if test="sellman != null">
+        sellman = #{sellman,jdbcType=VARCHAR},
+      </if>
+      <if test="sendman != null">
+        sendman = #{sendman,jdbcType=VARCHAR},
+      </if>
+      <if test="pickman != null">
+        pickman = #{pickman,jdbcType=VARCHAR},
+      </if>
+      <if test="pickmanphone != null">
+        pickmanPhone = #{pickmanphone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtype != null">
+        sendType = #{sendtype,jdbcType=VARCHAR},
+      </if>
+      <if test="onlinesum != null">
+        onlineSum = #{onlinesum,jdbcType=DOUBLE},
+      </if>
+      <if test="underlinesum != null">
+        underlineSum = #{underlinesum,jdbcType=DOUBLE},
+      </if>
+      <if test="freight != null">
+        freight = #{freight,jdbcType=DOUBLE},
+      </if>
+      <if test="allsum != null">
+        allsum = #{allsum,jdbcType=DOUBLE},
+      </if>
+      <if test="discountprice != null">
+        discountPrice = #{discountprice,jdbcType=DOUBLE},
+      </if>
+      <if test="commission != null">
+        commission = #{commission,jdbcType=DOUBLE},
+      </if>
+      <if test="receivedsum != null">
+        receivedSum = #{receivedsum,jdbcType=DOUBLE},
+      </if>
+      <if test="noreceivedsum != null">
+        noReceivedSum = #{noreceivedsum,jdbcType=DOUBLE},
+      </if>
+      <if test="maketableman != null">
+        makeTableMan = #{maketableman,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketstatus != null">
+        ticketStatus = #{ticketstatus,jdbcType=CHAR},
+      </if>
+      <if test="ticketno != null">
+        ticketNo = #{ticketno,jdbcType=VARCHAR},
+      </if>
+      <if test="allpaystatue != null">
+        allPayStatue = #{allpaystatue,jdbcType=CHAR},
+      </if>
+    </set>
+    where sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jixi.pojo.SellorderSum">
+    update sellorder_sum
+    set sellDate = #{selldate,jdbcType=TIMESTAMP},
+      projectName = #{projectname,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      customerName = #{customername,jdbcType=VARCHAR},
+      customerPhone = #{customerphone,jdbcType=VARCHAR},
+      customerType = #{customertype,jdbcType=VARCHAR},
+      sellman = #{sellman,jdbcType=VARCHAR},
+      sendman = #{sendman,jdbcType=VARCHAR},
+      pickman = #{pickman,jdbcType=VARCHAR},
+      pickmanPhone = #{pickmanphone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      sendType = #{sendtype,jdbcType=VARCHAR},
+      onlineSum = #{onlinesum,jdbcType=DOUBLE},
+      underlineSum = #{underlinesum,jdbcType=DOUBLE},
+      freight = #{freight,jdbcType=DOUBLE},
+      allsum = #{allsum,jdbcType=DOUBLE},
+      discountPrice = #{discountprice,jdbcType=DOUBLE},
+      commission = #{commission,jdbcType=DOUBLE},
+      receivedSum = #{receivedsum,jdbcType=DOUBLE},
+      noReceivedSum = #{noreceivedsum,jdbcType=DOUBLE},
+      makeTableMan = #{maketableman,jdbcType=VARCHAR},
+      ticketStatus = #{ticketstatus,jdbcType=CHAR},
+      ticketNo = #{ticketno,jdbcType=VARCHAR},
+      allPayStatue = #{allpaystatue,jdbcType=CHAR}
+    where sellOrderCode = #{sellordercode,jdbcType=VARCHAR}
+  </update>
+</mapper>
